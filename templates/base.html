@@ -1,0 +1,58 @@
+<head>
+    <meta charset="utf-8">
+    {% load staticfiles %}
+    <link rel="stylesheet" type="text/css" href="{% static '/css/teamapp.css' %}">
+    <link rel="stylesheet" type="text/css" href="{% static '/css/bootstrap.css' %}">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Početna stranica</title>
+    <!-- Core CSS - Include with every page -->
+</head>
+<body>
+<nav id="navigacija" class="navbar navbar-expand-md navbar-dark fixed-top bg-dark">
+    <a class="navbar-brand" href="/">TeamedApp</a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarCollapse"
+            aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarCollapse">
+        <ul class="navbar-nav mr-auto">
+            <li class="nav-item">
+                <a class="nav-link" href="prikazdestinacija">Destinacije <span class="sr-only">(current)</span></a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="prikazterena">Tereni</a>
+            </li>
+            {% if user.is_authenticated %}
+                <li class="nav-item">
+                    <a class="nav-link" style="float: right" href="profil">Profil</a>
+                </li>
+            {% endif %}
+        </ul>
+        <ul style="float: right" class="navbar-nav">
+            {% if user.is_authenticated %}
+                <li class="nav-item">
+                    <a class="nav-link" style="float: right" href="logout">Odjava</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="uredi?urediID={{ user.id }}">Uredi podatke</a>
+                </li>
+            {% else %}
+                <li class="nav-item">
+                    <a class="nav-link" style="float: right" href="login">Prijava</a>
+                </li>
+            {% endif %}
+            <li class="nav-item">
+                <a class="nav-link" href="o_nama">O nama</a>
+            </li>
+        </ul>
+    </div>
+</nav>
+{% block content %}
+{% endblock %}
+<footer class="footer" style="position: absolute">
+    <div class="container">
+        <span>Razvoj web aplikacija u Phytonu </span>
+        <span style="float: right">&copy; <i>2017. Ivan Bebek</i></span>
+    </div>
+</footer>
+</body>

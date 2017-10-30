@@ -1,0 +1,5 @@
+{% autoescape off %}
+Hi {{ user.username }},
+Molimo kliknite na link ispod da potvrdite svoju registraciju:
+http://{{ domain }}{% url 'activate' uidb64=uid token=token %}
+{% endautoescape %}

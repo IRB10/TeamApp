@@ -1,0 +1,118 @@
+<head>
+    {% load staticfiles %}
+    <link rel="stylesheet" type="text/css" href="{% static '/css/teamapp.css' %}">
+    <link rel="stylesheet" type="text/css" href="{% static '/css/bootstrap.css' %}">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    {% block head %}
+        <title>Prijava</title>
+    {% endblock %}
+</head>
+<body>
+<nav id="navigacija" class="navbar navbar-expand-md navbar-dark fixed-top bg-dark">
+    <a class="navbar-brand" href="/">TeamedApp</a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarCollapse"
+            aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarCollapse">
+        <ul class="navbar-nav mr-auto">
+            <li class="nav-item">
+                <a class="nav-link" href="/prikazdestinacija">Destinacije <span class="sr-only">(current)</span></a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="/prikazterena">Tereni</a>
+            </li>
+            {% if user.is_authenticated %}
+                <li class="nav-item">
+                    <a class="nav-link" style="float: right" href="profil">Profil</a>
+                </li>
+            {% endif %}
+        </ul>
+        <ul style="float: right" class="navbar-nav">
+            {% if user.is_authenticated %}
+                <li class="nav-item">
+                    <a class="nav-link" style="float: right" href="logout">Odjava</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="uredi?urediID={{ user.id }}">Uredi podatke</a>
+                </li>
+            {% else %}
+                <li class="nav-item">
+                    <a class="nav-link" style="float: right" href="login">Prijava</a>
+                </li>
+            {% endif %}
+            <li class="nav-item">
+                <a class="nav-link" href="/o_nama">O nama</a>
+            </li>
+        </ul>
+    </div>
+</nav>
+{% block content %}
+    <div class="container" style="margin-top: 125px">
+        {% if form.errors %}
+            <p>Kombinacija korisnickog imena i lozinke ne odgovara, molimo pokusajte ponovno.</p>
+        {% endif %}
+
+        {% if next %}
+            {% if user.is_authenticated %}
+                <p>Vaš racun nema pristup ovoj stranici!.</p>
+            {% else %}
+                <p>Prijavite se da pristupite aplikaciji.</p>
+            {% endif %}
+        {% endif %}
+        <div class="row">
+            <div class="col-md-4 col-md-offset-4">
+                <div class="login-panel panel panel-default">
+                    <div class="panel-heading">
+                    </div>
+                    <div class="panel-body">
+                        <form method="post" id="login_form" action="{% url 'login' %}">
+                            {% csrf_token %}
+                            <p class="bs-component">
+                            <table>
+                                <tr>
+                                    <td>{{ form.username.label_tag }}</td>
+                                    <td>{{ form.username }}</td>
+                                </tr>
+                                <tr>
+                                    <td>{{ form.password.label_tag }}</td>
+                                    <td>{{ form.password }}</td>
+                                </tr>
+                            </table>
+                            </p>
+                            <p class="bs-component">
+                                <input class="btn btn-success btn-sm" type="submit" style="margin-left: 238px;"
+                                       value="Prijavi se"/>
+                            </p>
+                            <div class="etc-login-form">
+                                <p style="float: left">Zaboravljena lozinka? <a href="/ponovno_postavljanje_lozinke">Pritisnite
+                                    ovdje</a></p>
+                                <p style="float: left">Novi korisnik? <a href="/registracija">Kreirajte novi račun</a>
+                                </p>
+                            </div>
+                            <input type="hidden" name="next" value="{{ next }}"/>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+{% endblock %}
+<footer class="footer" style="position: absolute">
+    <div class="container">
+        <span>Razvoj web aplikacija u Phytonu </span>
+        <span style="float: right">&copy; <i>2017. Ivan Bebek</i></span>
+    </div>
+</footer>
+</body>
+{% block javascript %}
+
+    <script>
+        {% if not user.is_authenticated %}
+            $("ul.nav.navbar-nav.navbar-right").css("display", "none");
+        {% endif %}
+    </script>
+
+{% endblock %}

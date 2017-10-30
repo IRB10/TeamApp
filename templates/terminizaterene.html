@@ -1,0 +1,95 @@
+<head>
+    <!-- Place this tag in your head or just before your close body tag. -->
+<script src="https://apis.google.com/js/platform.js" async defer></script>
+
+    {% load staticfiles %}
+    <link rel="stylesheet" type="text/css" href="{% static '/css/teamapp.css' %}">
+    <link rel="stylesheet" type="text/css" href="{% static '/css/bootstrap.css' %}">
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<nav id="navigacija" class="navbar navbar-expand-md navbar-dark fixed-top bg-dark">
+    <a class="navbar-brand" href="/">TeamedApp</a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarCollapse"
+            aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarCollapse">
+        <ul class="navbar-nav mr-auto">
+            <li class="nav-item">
+                <a class="nav-link" href="prikazdestinacija">Destinacije <span class="sr-only">(current)</span></a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="prikazterena">Tereni</a>
+            </li>
+            </li>
+            {% if user.is_authenticated %}
+                <li class="nav-item">
+                    <a class="nav-link" style="float: right" href="profil">Profil</a>
+                </li>
+            {% endif %}
+        </ul>
+        <ul style="float: right" class="navbar-nav">
+            {% if user.is_authenticated %}
+                <li class="nav-item">
+                    <a class="nav-link" style="float: right" href="logout">Odjava</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="uredi?urediID={{ user.id }}">Uredi podatke</a>
+                </li>
+            {% else %}
+                <li class="nav-item">
+                    <a class="nav-link" style="float: right" href="login">Prijava</a>
+                </li>
+            {% endif %}
+            <li class="nav-item">
+                <a class="nav-link" href="o_nama">O nama</a>
+            </li>
+        </ul>
+    </div>
+</nav>
+</br>
+<div class="container" style="margin-top: 50px;">
+    {% if varijabla|length != 0 %}
+        <div class="alert alert-danger " style="max-width: 36%" onclick="this.style.display = 'none'" role="alert">
+            <span>  {{ varijabla }}</span>
+        </div>
+    {% endif %}
+    {% if user.is_authenticated %}
+        <a class="btn btn-success" style="float: right" href="termini">Kreiraj novi termin</a>
+    {% endif %}
+    <h1>Termini</h1>
+    <div class="row" style="margin-left: 50px; margin-top: 20px;">
+        {% for termin in dajtermin %}
+
+            <div class="col-md-3" style="border: dashed; margin: 5px; padding: 5px">
+                <label>Termin opis: {{ termin.termin_opis }}</label></br>
+                <label>Broj dolazaka: {{ termin.broj_dolazaka }}</label></br>
+                <label>Maksimalan broj dolazaka: {{ termin.meksimalan_broj_dolazaka }}</label></br>
+                <label>Vrijeme termina: {{ termin.vrijeme_termina }}</label></br>
+                <label>Teren: {{ termin.tereni_teren }}</label></br>
+                <label>Sport: {{ termin.sportovi_sport }}</label></br>
+                {% if user.is_authenticated %}
+                    <a class="btn btn-success" style="float: right"
+                       href="prikazterminaa?terentermin={{ termin.tereni_teren_id }}&terminkorisnik={{ user.id }}&termin={{ termin.termin_id }}">Dolazim</a>
+                    <!-- Place this tag where you want the share button to render. -->
+                    <div class="g-plus" data-action="share"></div>
+                {% else %}
+                    <p>Prijavite se za mogućnost odabira dolaska</p>
+                {% endif %}
+
+            </div>
+            </br>
+        {% endfor %}
+
+    </div>
+
+</div>
+<footer class="footer" style="position: absolute">
+    <div class="container">
+        <span>Razvoj web aplikacija u Phytonu </span>
+        <span style="float: right">&copy; <i>2017. Ivan Bebek</i></span>
+    </div>
+</footer>
+</body>
